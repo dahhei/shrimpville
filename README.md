@@ -12,14 +12,12 @@ git clone https://github.com/facebookresearch/sam2.git && cd sam2
 
 ```
 echo "export SAM2_PATH=\"//home/noah/sam2/\"" >> ~/.zshrc && source ~/.zshrc
-
 ```
 
 or for bash
 
 ```
 echo "export SAM2_PATH=\"//home/$USER/sam2/\"" >> ~/.bashrc && source ~/.bashrc
-
 ```
 
 3. Create virtual environment for python

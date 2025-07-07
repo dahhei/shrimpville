@@ -1,4 +1,5 @@
-#!./sam2/py-venv/bin/python3
+#!/usr/bin/env python3
+
 
 # show motion plot on top of frame 0
 import pandas as pd
@@ -13,7 +14,12 @@ object_id = 1
 obj_df = df[df["object_id"] == object_id].sort_values("frame")
 
 # Load frame 0 as background
-frame_0_path = "./videos/2025-06-30-07/00000.jpg"  # adjust path as needed
+import sys
+if len(sys.argv) == 1:
+    print("Need arguments passed to get video dir")
+    quit(1)
+
+frame_0_path = sys.argv[1] + "/00000.jpg"  # adjust path as needed
 frame_img = Image.open(frame_0_path)
 
 # Set up the plot

@@ -1,4 +1,4 @@
-#!./sam2/py-venv/bin/python3
+#!/usr/bin/env python3
 
 import os
 import numpy as np
@@ -30,7 +30,12 @@ def show_box(box, ax):
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))
 
 # `video_dir` a directory of JPEG frames with filenames like `<frame_index>.jpg`
-video_dir = "./videos/2025-06-30-07/"
+import sys
+if len(sys.argv) == 1:
+    print("Need arguments passed to get video dir")
+    quit(1)
+
+video_dir = sys.argv[1]
 
 # scan all the JPEG frame names in this directory
 frame_names = [

@@ -1,4 +1,4 @@
-#!./sam2/py-venv/bin/python3
+#!/usr/bin/env python3
 
 import os
 # if using Apple MPS, fall back to CPU for unsupported ops
@@ -33,11 +33,13 @@ elif device.type == "mps":
 
 from sam2.build_sam import build_sam2_video_predictor
 
-sam2_checkpoint = "./sam2/checkpoints/sam2.1_hiera_tiny.pt"
-model_cfg = "./sam2/sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
+#replace the environment var with correct path to sam2 dir
+sam2_checkpoint = "/" + os.environ.get('SAM2_PATH') + "checkpoints/sam2.1_hiera_tiny.pt"
+model_cfg = "/" + os.environ.get('SAM2_PATH') + "sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
 
 predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=device)
 
+"""
 def show_mask(mask, ax, obj_id=None, random_color=False):
     if random_color:
         color = np.concatenate([np.random.random(3), np.array([0.6])], axis=0)
@@ -61,9 +63,16 @@ def show_box(box, ax):
     x0, y0 = box[0], box[1]
     w, h = box[2] - box[0], box[3] - box[1]
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))
+"""
+
 
 # `video_dir` a directory of JPEG frames with filenames like `<frame_index>.jpg`
-video_dir = "./videos/2025-06-30-07/"
+import sys
+if len(sys.argv) == 1:
+    print("Need arguments passed to get video dir")
+    quit(1)
+
+video_dir = sys.argv[1]
 
 # scan all the JPEG frame names in this directory
 frame_names = [
@@ -73,11 +82,13 @@ frame_names = [
 frame_names.sort(key=lambda p: int(os.path.splitext(p)[0]))
 
 # take a look the first video frame
-#frame_idx = 0
-#plt.figure(figsize=(9, 6))
-#plt.title(f"frame {frame_idx}")
-#plt.imshow(Image.open(os.path.join(video_dir, frame_names[frame_idx])))
-#plt.show()
+"""
+frame_idx = 0
+plt.figure(figsize=(9, 6))
+plt.title(f"frame {frame_idx}")
+plt.imshow(Image.open(os.path.join(video_dir, frame_names[frame_idx])))
+plt.show()
+"""
 
 inference_state = predictor.init_state(video_path=video_dir)
 
@@ -86,9 +97,7 @@ ann_obj_id = 1  # give a unique id to each object we interact with (it can be an
 
 # Let's add a positive click at (x, y) = (210, 350) to get started
 # points is the coords needed (i.e. 124 is x axis and 737 is y axis
-# commeted out version is test verision using plant footage for first run
-#points = np.array([[124, 737]], dtype=np.float32)
-points = np.array([[520, 290]], dtype=np.float32)
+points = np.array([[124, 737]], dtype=np.float32)
 # for labels, `1` means positive click and `0` means negative click
 labels = np.array([1], np.int32)
 _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
@@ -103,9 +112,9 @@ _, out_obj_ids, out_mask_logits = predictor.add_new_points_or_box(
 plt.figure(figsize=(9, 6))
 plt.title(f"frame {ann_frame_idx}")
 plt.imshow(Image.open(os.path.join(video_dir, frame_names[ann_frame_idx])))
-show_points(points, labels, plt.gca())
-show_mask((out_mask_logits[0] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_ids[0])
-plt.show()
+#show_points(points, labels, plt.gca())
+#show_mask((out_mask_logits[0] > 0.0).cpu().numpy(), plt.gca(), obj_id=out_obj_ids[0])
+#plt.show()
 
 
 # run propagation throughout the video and collect the results in a dict
@@ -115,6 +124,7 @@ for out_frame_idx, out_obj_ids, out_mask_logits in predictor.propagate_in_video(
         out_obj_id: (out_mask_logits[i] > 0.0).cpu().numpy()
         for i, out_obj_id in enumerate(out_obj_ids)
     }
+
 
 # imported from chatgpt to extract mask to csv (I hate myself)
 ################################################################################
@@ -150,6 +160,7 @@ df.to_csv("mask_centers.csv", index=False)
 
 
 # render the segmentation results every few frames
+"""
 vis_frame_stride = 30
 plt.close("all")
 for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
@@ -159,3 +170,4 @@ for out_frame_idx in range(0, len(frame_names), vis_frame_stride):
     for out_obj_id, out_mask in video_segments[out_frame_idx].items():
         show_mask(out_mask, plt.gca(), obj_id=out_obj_id)
     plt.show()
+"""

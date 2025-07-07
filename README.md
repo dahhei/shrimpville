@@ -2,12 +2,12 @@
 
 ## Installation
 
-1. Install clone sam2 from the repository.
+1. Clone sam2 from the repository.
 
 ```
 git clone https://github.com/facebookresearch/sam2.git ; cd sam2
 ```
-2. Create virtual environment for python as this will be easier to maintain between multiple people
+2. Create virtual environment for python
 
 ```
 python -m venv py-venv
@@ -26,10 +26,10 @@ cd checkpoints && \
 cd ..
 ```
 
-5. Finish installing dependencies for other things
+5. Finish installing dependencies used outside of sam2 requirements
 
 ```
 ./py-venv/bin/pip3 install pandas
 ```
 
-## Use
+## Usage

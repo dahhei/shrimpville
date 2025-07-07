@@ -1,4 +1,4 @@
-#!/home/noah/sam2/py-venv/bin/python3
+#!./sam2/py-venv/bin/python3
 
 import os
 # if using Apple MPS, fall back to CPU for unsupported ops
@@ -33,8 +33,8 @@ elif device.type == "mps":
 
 from sam2.build_sam import build_sam2_video_predictor
 
-sam2_checkpoint = "/home/noah/sam2/checkpoints/sam2.1_hiera_tiny.pt"
-model_cfg = "/home/noah/sam2/sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
+sam2_checkpoint = "./sam2/checkpoints/sam2.1_hiera_tiny.pt"
+model_cfg = "./sam2/sam2/configs/sam2.1/sam2.1_hiera_t.yaml"
 
 predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=device)
 
@@ -63,8 +63,7 @@ def show_box(box, ax):
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))
 
 # `video_dir` a directory of JPEG frames with filenames like `<frame_index>.jpg`
-#video_dir = "/home/noah/sam2/videos/2025-06-30-07/"
-video_dir = "/home/noah/sam2/videos/me_sample/"
+video_dir = "./videos/2025-06-30-07/"
 
 # scan all the JPEG frame names in this directory
 frame_names = [

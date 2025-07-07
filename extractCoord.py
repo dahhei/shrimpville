@@ -1,4 +1,4 @@
-#!/home/noah/sam2/py-venv/bin/python3
+#!./sam2/py-venv/bin/python3
 
 import os
 import numpy as np
@@ -30,8 +30,7 @@ def show_box(box, ax):
     ax.add_patch(plt.Rectangle((x0, y0), w, h, edgecolor='green', facecolor=(0, 0, 0, 0), lw=2))
 
 # `video_dir` a directory of JPEG frames with filenames like `<frame_index>.jpg`
-#video_dir = "/home/noah/sam2/videos/2025-06-30-07/"
-video_dir = "/home/noah/sam2/videos/me_sample/"
+video_dir = "./videos/2025-06-30-07/"
 
 # scan all the JPEG frame names in this directory
 frame_names = [

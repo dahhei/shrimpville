@@ -11,7 +11,7 @@ git clone https://github.com/facebookresearch/sam2.git && cd sam2
 2. Add path to sam2 to environment (i.e add to bashrc or zshrc)
 
 ```
-echo "export SAM2_PATH=\"//home/noah/sam2/\"" >> ~/.zshrc && source ~/.zshrc
+echo "export SAM2_PATH=\"//home/$USER/sam2/\"" >> ~/.zshrc && source ~/.zshrc
 ```
 
 or for bash
